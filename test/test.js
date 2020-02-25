@@ -65,9 +65,7 @@ describe('getNextUniqueId', () => {
 describe('todos', () => {
   before(initializeTestFiles);
   beforeEach(initializeTestCounter);
-  beforeEach(cleanTestDatastore);
-
-
+  beforeEach(cleanTestDatastore)
   describe('create', () => {
     it('should create a new file for each todo', (done) => {
       todos.create('todo1', (err, data) => {

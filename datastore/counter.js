@@ -40,7 +40,17 @@ const writeCounter = (count, callback) => {
 
 exports.getNextUniqueId = (callback) => {
   readCounter((err, fileData) => {
-    writeCounter(fileData += 1, callback);
+    if (err) {
+      throw ('error reading counter');
+    } else {
+      writeCounter(fileData += 1, (error, counterString)=>{
+        if (error) {
+          console.log((error));
+        } else {
+          callback(null, counterString);
+        }
+      });
+    }
   });
 };
 
