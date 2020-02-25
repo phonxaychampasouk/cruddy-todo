@@ -43,30 +43,45 @@ exports.readAll = (callback) => {
 exports.readOne = (id, callback) => {
   fs.readFile((path.join((exports.dataDir), `${id}.txt`)), 'utf8', (error, fileData) => {
     if (error) {
-      console.log('error');
+      callback(error);
     } else {
-      console.log(fileData);
-      callback(null, fileData);
+      callback(null, {id, text: fileData});
     }
   });
 };
-// var text = items[id];
-// if (!text) {
-//   callback(new Error(`No item with id: ${id}`));
-// } else {
-//   callback(null, { id, text });
 
 exports.update = (id, text, callback) => {
-  var item = items[id];
-  if (!item) {
-    callback(new Error(`No item with id: ${id}`));
-  } else {
-    items[id] = text;
-    callback(null, { id, text });
-  }
+  fs.access((path.join((exports.dataDir), `${id}.txt`)), (error) => {
+    if (error) {
+      callback (error);
+    } else {
+      fs.writeFile(path.join((exports.dataDir), `${id}.txt`), text, (error) => {
+        if (error) {
+          callback(error);
+        } else {
+          callback(null, { id: id, text: text });
+        }
+      });
+    }
+  });
 };
 
 exports.delete = (id, callback) => {
+  fs.access((path.join((exports.dataDir), `${id}.txt`)), (error) => {
+    if (error) {
+      callback (error);
+    } else {
+      fs.unlink(path.join((exports.dataDir), `${id}.txt`), (error) => {
+        if (error) {
+          callback(error);
+        } else {
+          callback(null);
+        }
+      });
+    }
+  });
+
+  /*
   var item = items[id];
   delete items[id];
   if (!item) {
@@ -75,6 +90,7 @@ exports.delete = (id, callback) => {
   } else {
     callback();
   }
+  */
 };
 
 // Config+Initialization code -- DO NOT MODIFY /////////////////////////////////
