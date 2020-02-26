@@ -33,7 +33,7 @@ exports.readOne = (id, callback) => {
     if (error) {
       callback(error);
     } else {
-      callback(null, {id, text: fileData});
+      callback(null, { id, text: fileData });
     }
   });
 };
@@ -42,30 +42,33 @@ const promiseReadOne = Promise.promisify(exports.readOne);
 const promiseReadDir = Promise.promisify(fs.readdir);
 
 exports.readAll = (callback) => {
-  promiseReadDir(exports.dataDir)
-    .then(file)
-  ;
 
-  /*
-  fs.readdir(exports.dataDir, (error, files) => {
-    if (error) {
-      throw ('error reading all files');
-    } else {
-      let filesObj = files.map(singleFileName =>
-        ({
-          id: singleFileName.slice(0, -4),
-          text: singleFileName.slice(0, -4)
-        }));
-      callback(null, filesObj);
-    }
-  });
-  */
+  // promiseReadDir(exports.dataDir)
+  //   .then((files) => files.map(file =>
+
+  //.then(console.log);
+
 };
+/*
+fs.readdir(exports.dataDir, (error, files) => {
+  if (error) {
+    throw ('error reading all files');
+  } else {
+    let filesObj = files.map(singleFileName =>
+      ({
+        id: singleFileName.slice(0, -4),
+        text: singleFileName.slice(0, -4)
+      }));
+    callback(null, filesObj);
+  }
+});
+*/
+
 
 exports.update = (id, text, callback) => {
   fs.access((path.join((exports.dataDir), `${id}.txt`)), (error) => {
     if (error) {
-      callback (error);
+      callback(error);
     } else {
       fs.writeFile(path.join((exports.dataDir), `${id}.txt`), text, (error) => {
         if (error) {
@@ -81,7 +84,7 @@ exports.update = (id, text, callback) => {
 exports.delete = (id, callback) => {
   fs.access((path.join((exports.dataDir), `${id}.txt`)), (error) => {
     if (error) {
-      callback (error);
+      callback(error);
     } else {
       fs.unlink(path.join((exports.dataDir), `${id}.txt`), (error) => {
         if (error) {
